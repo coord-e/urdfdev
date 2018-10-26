@@ -11,5 +11,6 @@ RUN cd /tmp \
   && mv noVNC* noVNC
 
 EXPOSE 6080
+WORKDIR /data
 
 ENTRYPOINT ["/entrypoint.sh"]
