@@ -3,11 +3,7 @@
 model_path=$1
 urdf_path=$(mktemp)
 
-if [[ "$model_path" = *.xacro ]]; then
-  /ros_entrypoint.sh rosrun xacro xacro --xacro-ns "$model_path" > $urdf_path
-else
-  cp "$model_path" "$urdf_path"
-fi
+/build.sh $model_path $urdf_path
 
 export DISPLAY=:0
 Xvfb $DISPLAY -screen 0 1024x768x24 +extension GLX +render -noreset &
