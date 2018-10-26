@@ -7,4 +7,4 @@ RUN cd /tmp \
   && tar xf urdf-viz.tar.gz \
   && mv urdf-viz /usr/local/bin \
   && apt-get update \
-  && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro xserver-xorg
+  && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro xserver-xorg xvfb x11vnc 
