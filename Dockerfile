@@ -14,4 +14,4 @@ RUN cd /tmp \
 
 EXPOSE 6080
 
-ENTRYPOINT ["/entrypoint.sh", "roslaunch", "urdf_tutorial", "display.launch"]
+ENTRYPOINT ["/entrypoint.sh"]
