@@ -9,10 +9,11 @@ ADD https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz /tmp/novnc.t
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /bin/wait-for-it
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TERM=screen-256color
 
 RUN cd /opt/urdfdev \
   && apt-get update \
-  && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-urdf-tutorial xserver-xorg xvfb x11vnc net-tools fswatch fluxbox xdotool \
+  && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-urdf-tutorial xserver-xorg xvfb x11vnc net-tools fswatch fluxbox xdotool ncurses-bin \
   && tar xf /tmp/novnc.tar.gz \
   && mv noVNC* noVNC \
   && chmod +x /bin/wait-for-it \
