@@ -4,6 +4,7 @@ source "/opt/ros/$ROS_DISTRO/setup.bash"
 
 model_path=$1
 urdf_path=$2
+is_first_time=$3
 
 if [[ "$model_path" = *.xacro ]]; then
   rosrun xacro xacro --xacro-ns "$model_path" > $urdf_path
@@ -11,13 +12,15 @@ else
   cp "$model_path" "$urdf_path"
 fi
 
-xdotool search --name RViz key ctrl+s
-# Wait until saving is done
-xdotool search --sync --name '^[^*]*RViz$'
+if $is_first_time; then
+  xdotool search --name RViz key ctrl+s
+  # Wait until saving is done
+  xdotool search --sync --name '^[^*]*RViz$'
 
-rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill
-# Kill all joint_state_publisher processes, which is left after `rosnode kill`
-ps a | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
+  rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill
+  # Kill all joint_state_publisher processes, which is left after `rosnode kill`
+  ps a | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
+fi
 
 rosparam set robot_description -t "$urdf_path"
 rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
