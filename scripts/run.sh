@@ -17,15 +17,15 @@ display_size=${URDFDEV_DISPLAY_SIZE:-1024x768}
 novnc_port=${URDFDEV_NOVNC_PORT:-6080}
 
 export DISPLAY=:0
-Xvfb $DISPLAY -screen 0 ${display_size}x24 +extension GLX +render -noreset &>> $URDFDEV_LOG &
+exec_log Xvfb $DISPLAY -screen 0 ${display_size}x24 +extension GLX +render -noreset &
 fluxbox -log $URDFDEV_LOG &> /dev/null &
 x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg -o $URDFDEV_LOG
-/opt/urdfdev/noVNC/utils/launch.sh --vnc localhost:5900 --listen ${novnc_port} &>> $URDFDEV_LOG &
+exec_log /opt/urdfdev/noVNC/utils/launch.sh --vnc localhost:5900 --listen ${novnc_port} &
 
 roscore &>> $URDFDEV_LOG &
-wait-for-it ${ROS_MASTER_URI#*//} &>> $URDFDEV_LOG
+exec_log wait-for-it ${ROS_MASTER_URI#*//}
 
-rosparam set use_gui true &>> $URDFDEV_LOG
+exec_log rosparam set use_gui true
 
 eval $build_cmd false
 
