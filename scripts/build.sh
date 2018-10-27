@@ -4,6 +4,8 @@ source "/opt/ros/$ROS_DISTRO/setup.bash"
 
 set -euo pipefail
 
+source "/opt/urdfdev/lib/log.sh"
+
 model_path=$1
 urdf_path=$2
 is_running=$3
@@ -34,4 +36,4 @@ rosrun robot_state_publisher state_publisher &>> $URDFDEV_LOG &
 # Maximize rviz window
 xdotool search --sync --name RViz windowsize 100% 100% &>> $URDFDEV_LOG
 
-echo "Built $urdf_path and restarted rviz"
+info "Built $urdf_path and restarted rviz"

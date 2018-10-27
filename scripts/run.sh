@@ -4,6 +4,8 @@ source "/opt/ros/$ROS_DISTRO/setup.bash"
 
 set -euo pipefail
 
+source "/opt/urdfdev/lib/log.sh"
+
 model_path=$1
 shift
 sources=${@:-$(pwd)}
@@ -27,6 +29,6 @@ rosparam set use_gui true &>> $URDFDEV_LOG
 
 eval $build_cmd false
 
-wait-for-it localhost:$novnc_port && echo "Ready. go to http://localhost:6800"
+wait-for-it -q localhost:$novnc_port && info "Ready. go to http://localhost:6800"
 
 fswatch --event Created --event Updated --event Removed --event Renamed --recursive ${URDFDEV_FSWATCH_ADDITIONAL_OPTIONS:-} $sources | xargs -n1 $build_cmd true
