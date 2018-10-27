@@ -6,6 +6,8 @@ set -euo pipefail
 
 source "/opt/urdfdev/lib/log.sh"
 
+info "Rebuilding..."
+
 model_path=$1
 urdf_path=$2
 is_running=$3
