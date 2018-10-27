@@ -7,9 +7,10 @@ urdf_path=$(mktemp)
 
 build_cmd="/build.sh $model_path $urdf_path"
 
+display_size=${URDFENV_DISPLAY_SIZE:-1024x768}
 
 export DISPLAY=:0
-Xvfb $DISPLAY -screen 0 1024x768x24 +extension GLX +render -noreset &
+Xvfb $DISPLAY -screen 0 ${display_size}x24 +extension GLX +render -noreset &
 fluxbox &
 x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg
 /tmp/noVNC/utils/launch.sh --vnc localhost:5900 &
