@@ -10,3 +10,8 @@ function exec_log_() {
 function exec_log() {
   exec_log_ $@ &>> $URDFDEV_LOG
 }
+
+function exec_info {
+  info "$@"
+  exec_log_ $@ &>> $URDFDEV_LOG
+}

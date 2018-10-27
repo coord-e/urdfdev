@@ -11,11 +11,11 @@ urdf_path=$2
 is_running=$3
 
 if [ -v URDFDEV_CUSTOM_BUILD ]; then
-  eval $URDFDEV_CUSTOM_BUILD &>> $URDFDEV_LOG
+  exec_info eval $URDFDEV_CUSTOM_BUILD
 elif [[ "$model_path" = *.xacro ]]; then
-  rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "ignore" > $urdf_path 2>> $URDFDEV_LOG
+  exec_info rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "ignore" -o "$urdf_path"
 else
-  cp "$model_path" "$urdf_path"
+  exec_info cp "$model_path" "$urdf_path"
 fi
 
 if $is_running; then
