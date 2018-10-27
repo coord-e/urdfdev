@@ -13,10 +13,12 @@ else
 fi
 
 if [ -s "$pid_path" ]; then
-  kill $(cat $pid_path)
+  cat $pid_path | xargs kill
 fi
 
 rosparam set robot_description -t "$urdf_path"
 rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
 echo "$!" > $pid_path
+rosrun robot_state_publisher state_publisher &
+echo "$!" >> $pid_path
 echo "Built $urdf_path and restarted rviz $(cat $pid_path)"
