@@ -30,6 +30,6 @@ rosrun joint_state_publisher joint_state_publisher &
 rosrun robot_state_publisher state_publisher &
 
 # Maximize rviz window
-xdotool search --name RViz windowsize 100% 100%
+xdotool search --sync --name RViz windowsize 100% 100%
 
 echo "Built $urdf_path and restarted rviz"
