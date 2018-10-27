@@ -13,9 +13,10 @@ fi
 
 xdotool search --name rviz key ctrl+s
 
-rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill
+rosnode list | grep -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill
 # Kill all joint_state_publisher processes, which is left after `rosnode kill`
 ps a | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
+rosnode list | grep rviz | xargs -r rosnode kill
 
 rosparam set robot_description -t "$urdf_path"
 rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
