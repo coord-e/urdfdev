@@ -6,7 +6,7 @@ set -euo pipefail
 
 source "/opt/urdfdev/lib/log.sh"
 
-info "Rebuilding..."
+status "Rebuilding..."
 
 model_path=$1
 urdf_path=$2
@@ -38,4 +38,4 @@ exec_log rosrun robot_state_publisher state_publisher &
 # Maximize rviz window
 exec_log xdotool search --sync --name RViz windowsize 100% 100%
 
-info "Built $urdf_path and restarted rviz"
+status "Built $urdf_path and restarted rviz"
