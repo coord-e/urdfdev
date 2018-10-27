@@ -1,6 +1,8 @@
 #!/bin/bash
 
 model_path=$1
+shift
+sources=${@:-$(pwd)}
 urdf_path=$(mktemp)
 
 build_cmd="/build.sh $model_path $urdf_path"
@@ -19,4 +21,4 @@ wait-for-it ${ROS_MASTER_URI#*//}
 rosparam set use_gui true
 
 eval $build_cmd
-fswatch --event Created --event Updated --event Removed --event Renamed --recursive $(pwd) | xargs -n1 $build_cmd
+fswatch --event Created --event Updated --event Removed --event Renamed --recursive $sources | xargs -n1 $build_cmd
