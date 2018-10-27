@@ -22,7 +22,7 @@ exec_log_ fluxbox -log $URDFDEV_LOG &> /dev/null &
 exec_log_ x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg -o $URDFDEV_LOG
 exec_log /opt/urdfdev/noVNC/utils/launch.sh --vnc localhost:5900 --listen ${novnc_port} &
 
-roscore &>> $URDFDEV_LOG &
+exec_log roscore &
 exec_log wait-for-it ${ROS_MASTER_URI#*//}
 
 exec_log rosparam set use_gui true
