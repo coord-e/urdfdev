@@ -18,11 +18,30 @@ jobs:
               DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
             fi
             echo "export DOCKER_TAG=$DOCKER_TAG" | tee docker_tag
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/urdfdev.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/urdfdev.tar | true
       - run:
           name: Build image
           command: |
             source docker_tag
-            docker build -t coorde/urdfdev:${DOCKER_TAG} .
+            docker build --cache-from=coorde/urdfdev -t coorde/urdfdev:${DOCKER_TAG} .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/urdfdev.tar coorde/urdfdev
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/urdfdev.tar
       - run:
           name: Push
           command: |
