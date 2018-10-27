@@ -26,4 +26,8 @@ rosparam set robot_description -t "$urdf_path"
 rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
 rosrun joint_state_publisher joint_state_publisher &
 rosrun robot_state_publisher state_publisher &
+
+# Maximize rviz window
+xdotool search --name RViz windowsize 100% 100%
+
 echo "Built $urdf_path and restarted rviz"
