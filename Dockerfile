@@ -2,7 +2,7 @@ FROM ros:latest
 
 ARG NOVNC_VERSION=1.0.0
 
-COPY entrypoint.sh /
+COPY urdfenv_entrypoint.sh /
 COPY scripts /opt/urdfenv/
 
 ADD https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz /tmp/novnc.tar.gz
@@ -24,4 +24,4 @@ RUN cd /opt/urdfenv \
 EXPOSE 6080
 WORKDIR /data
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/urdfenv_entrypoint.sh"]
