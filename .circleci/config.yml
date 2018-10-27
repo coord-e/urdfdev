@@ -12,7 +12,11 @@ jobs:
       - run:
           name: Prepare suitable tag name
           command: |
-            DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
+            if [ "$CIRCLE_TAG" ]; then
+              DOCKER_TAG="$CIRCLE_TAG"
+            else
+              DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
+            fi
             echo "export DOCKER_TAG=$DOCKER_TAG" > docker_tag
       - run:
           name: Build image
