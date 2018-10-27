@@ -14,6 +14,8 @@ x11vnc -display $DISPLAY -rfbport 5900 &
 
 source "/opt/ros/$ROS_DISTRO/setup.bash"
 roscore &
+wait-for-it ${ROS_MASTER_URI#*//}
+
 rosparam set use_gui true
 
 eval $build_cmd
