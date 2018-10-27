@@ -6,6 +6,8 @@ set -euo pipefail
 
 source "/opt/urdfdev/lib/log.sh"
 
+info "Starting..."
+
 model_path=$1
 shift
 sources=${@:-$(pwd)}
