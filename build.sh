@@ -7,7 +7,7 @@ urdf_path=$2
 is_running=$3
 
 if [[ "$model_path" = *.xacro ]]; then
-  rosrun xacro xacro --xacro-ns "$model_path" > $urdf_path
+  rosrun xacro xacro $URDFENV_XACRO_ADDITIONAL_OPTIONS "$model_path" > $urdf_path
 else
   cp "$model_path" "$urdf_path"
 fi
