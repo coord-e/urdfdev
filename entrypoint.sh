@@ -9,7 +9,7 @@ build_cmd="/build.sh $model_path $urdf_path"
 export DISPLAY=:0
 Xvfb $DISPLAY -screen 0 1024x768x24 +extension GLX +render -noreset &
 fluxbox &
-x11vnc -display $DISPLAY -rfbport 5900 &
+x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg
 /tmp/noVNC/utils/launch.sh --vnc localhost:5900 &
 
 source "/opt/ros/$ROS_DISTRO/setup.bash"
