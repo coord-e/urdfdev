@@ -6,7 +6,9 @@ model_path=$1
 urdf_path=$2
 is_running=$3
 
-if [[ "$model_path" = *.xacro ]]; then
+if [ -v URDFENV_CUSTOM_BUILD ]; then
+  eval $URDFENV_CUSTOM_BUILD
+elif [[ "$model_path" = *.xacro ]]; then
   rosrun xacro xacro $URDFENV_XACRO_ADDITIONAL_OPTIONS "$model_path" > $urdf_path
 else
   cp "$model_path" "$urdf_path"
