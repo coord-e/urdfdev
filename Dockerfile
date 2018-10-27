@@ -9,6 +9,7 @@ ADD https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz /tmp/novnc.t
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /bin/wait-for-it
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TERM=screen-256color
 
 RUN cd /opt/urdfdev \
   && apt-get update \
