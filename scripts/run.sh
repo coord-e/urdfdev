@@ -18,8 +18,8 @@ novnc_port=${URDFDEV_NOVNC_PORT:-6080}
 
 export DISPLAY=:0
 exec_log Xvfb $DISPLAY -screen 0 ${display_size}x24 +extension GLX +render -noreset &
-exec_log_ fluxbox -log $URDFDEV_LOG &> /dev/null &
-exec_log_ x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg -o $URDFDEV_LOG
+exec_log_ fluxbox -log "$URDFDEV_LOG" &> /dev/null &
+exec_log_ x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg -o "$URDFDEV_LOG" &> /dev/null
 exec_log /opt/urdfdev/noVNC/utils/launch.sh --vnc localhost:5900 --listen ${novnc_port} &
 
 exec_log roscore &
