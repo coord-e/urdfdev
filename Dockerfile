@@ -14,7 +14,11 @@ RUN cd /tmp \
   && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-urdf-tutorial xserver-xorg xvfb x11vnc net-tools fswatch fluxbox xdotool \
   && tar xf novnc.tar.gz \
   && mv noVNC* noVNC \
-  && chmod +x /bin/wait-for-it
+  && chmod +x /bin/wait-for-it \
+  && rm novnc.tar.gz \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 6080
 WORKDIR /data
