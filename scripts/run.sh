@@ -31,6 +31,6 @@ exec_log rosparam set use_gui true
 
 eval $build_cmd false
 
-wait-for-it -q localhost:$novnc_port -t 0 && info "Ready. go to http://localhost:6800"
+wait-for-it -q localhost:$novnc_port -t 0 && info "Ready. You can now view RViz at http://localhost:6080/"
 
 fswatch --event Created --event Updated --event Removed --event Renamed --recursive ${URDFDEV_FSWATCH_ADDITIONAL_OPTIONS:-} $sources | xargs -n1 $build_cmd true
