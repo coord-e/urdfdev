@@ -29,4 +29,4 @@ eval $build_cmd false
 
 wait-for-it localhost:$novnc_port && echo "Ready. go to http://localhost:6800"
 
-fswatch --event Created --event Updated --event Removed --event Renamed --recursive $URDFENV_FSWATCH_ADDITIONAL_OPTIONS $sources | xargs -n1 $build_cmd true
+fswatch --event Created --event Updated --event Removed --event Renamed --recursive ${URDFENV_FSWATCH_ADDITIONAL_OPTIONS:-} $sources | xargs -n1 $build_cmd true

@@ -11,7 +11,7 @@ is_running=$3
 if [ -v URDFENV_CUSTOM_BUILD ]; then
   eval $URDFENV_CUSTOM_BUILD &>> $URDFENV_LOG
 elif [[ "$model_path" = *.xacro ]]; then
-  rosrun xacro xacro $URDFENV_XACRO_ADDITIONAL_OPTIONS "$model_path" > $urdf_path 2>> $URDFENV_LOG
+  rosrun xacro xacro ${URDFENV_XACRO_ADDITIONAL_OPTIONS:-} "$model_path" > $urdf_path 2>> $URDFENV_LOG
 else
   cp "$model_path" "$urdf_path"
 fi
