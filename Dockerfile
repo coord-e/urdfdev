@@ -6,6 +6,9 @@ COPY entrypoint.sh /
 COPY build.sh /
 ADD https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz /tmp/novnc.tar.gz
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /bin/wait-for-it
+
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN cd /tmp \
   && apt-get update \
   && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-urdf-tutorial xserver-xorg xvfb x11vnc net-tools fswatch fluxbox xdotool \
