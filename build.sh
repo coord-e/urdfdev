@@ -13,7 +13,10 @@ else
 fi
 
 if [ -s "$pid_path" ]; then
-  cat $pid_path | xargs kill
+  rosnode list | grep rviz | xargs rosnode kill
+  rosnode kill joint_state_publisher robot_state_publisher
+  # Kill all joint_state_publisher processes, which is left after `rosnode kill`
+  ps a | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs kill -9
 fi
 
 rosparam set robot_description -t "$urdf_path"
