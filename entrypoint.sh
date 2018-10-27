@@ -20,5 +20,5 @@ wait-for-it ${ROS_MASTER_URI#*//}
 
 rosparam set use_gui true
 
-eval $build_cmd true
-fswatch --event Created --event Updated --event Removed --event Renamed --recursive $sources | xargs -n1 $build_cmd false
+eval $build_cmd false
+fswatch --event Created --event Updated --event Removed --event Renamed --recursive $sources | xargs -n1 $build_cmd true

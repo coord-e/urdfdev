@@ -4,7 +4,7 @@ source "/opt/ros/$ROS_DISTRO/setup.bash"
 
 model_path=$1
 urdf_path=$2
-is_first_time=$3
+is_running=$3
 
 if [[ "$model_path" = *.xacro ]]; then
   rosrun xacro xacro --xacro-ns "$model_path" > $urdf_path
@@ -12,7 +12,7 @@ else
   cp "$model_path" "$urdf_path"
 fi
 
-if $is_first_time; then
+if $is_running; then
   xdotool search --name RViz key ctrl+s
   # Wait until saving is done
   xdotool search --sync --name '^[^*]*RViz$'
