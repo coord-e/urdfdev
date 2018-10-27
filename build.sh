@@ -11,7 +11,7 @@ else
   cp "$model_path" "$urdf_path"
 fi
 
-xdotool search --name rviz key ctrl+s
+xdotool search --name RViz key ctrl+s
 
 rosnode list | grep -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill
 # Kill all joint_state_publisher processes, which is left after `rosnode kill`
