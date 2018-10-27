@@ -2,9 +2,8 @@
 
 model_path=$1
 urdf_path=$(mktemp)
-pid_path=$(mktemp)
 
-build_cmd="/build.sh $model_path $urdf_path $pid_path"
+build_cmd="/build.sh $model_path $urdf_path"
 
 
 export DISPLAY=:0
