@@ -21,7 +21,7 @@ if $is_running; then
 
   rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill
   # Kill all joint_state_publisher processes, which is left after `rosnode kill`
-  ps a | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
+  ps ax | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
 fi
 
 rosparam set robot_description -t "$urdf_path"
