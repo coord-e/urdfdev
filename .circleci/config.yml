@@ -10,10 +10,17 @@ jobs:
           name: Login
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
+          name: Prepare suitable tag name
+          command: |
+            DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
+            echo "export DOCKER_TAG=$DOCKER_TAG" > docker_tag
+      - run:
           name: Build image
           command: |
-            docker build -t coorde/urdfdev .
+            source docker_tag
+            docker build -t coorde/urdfdev:${DOCKER_TAG} .
       - run:
           name: Push
           command: |
-            docker push coorde/urdfdev
+            source docker_tag
+            docker push coorde/urdfdev:${DOCKER_TAG}
