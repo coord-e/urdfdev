@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "/opt/ros/$ROS_DISTRO/setup.bash"
+
 set -euo pipefail
 
 model_path=$1
@@ -18,7 +20,6 @@ fluxbox -log $URDFENV_LOG &> /dev/null &
 x11vnc -display $DISPLAY -rfbport 5900 -noxrecord -xkb -bg -o $URDFENV_LOG
 /opt/urdfenv/noVNC/utils/launch.sh --vnc localhost:5900 --listen ${novnc_port} &>> $URDFENV_LOG &
 
-source "/opt/ros/$ROS_DISTRO/setup.bash"
 roscore &>> $URDFENV_LOG &
 wait-for-it ${ROS_MASTER_URI#*//} &>> $URDFENV_LOG
 

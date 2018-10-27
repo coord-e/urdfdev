@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -euo pipefail
-
 source "/opt/ros/$ROS_DISTRO/setup.bash"
+
+set -euo pipefail
 
 model_path=$1
 urdf_path=$2
