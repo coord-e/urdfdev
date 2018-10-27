@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 model_path=$1
 shift
 sources=${@:-$(pwd)}

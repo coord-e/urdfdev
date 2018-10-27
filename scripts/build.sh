@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 source "/opt/ros/$ROS_DISTRO/setup.bash"
 
 model_path=$1
