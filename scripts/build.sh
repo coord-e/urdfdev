@@ -12,6 +12,7 @@ is_running=$3
 
 status "Building..."
 
+set +euo pipefail
 if [ -v URDFDEV_CUSTOM_BUILD ]; then
   exec_info eval "$URDFDEV_CUSTOM_BUILD"
 elif [[ "$model_path" = *.xacro ]]; then
@@ -19,12 +20,19 @@ elif [[ "$model_path" = *.xacro ]]; then
 else
   exec_info cp "$model_path" "$urdf_path"
 fi
+if [ "$?" != "0" ]; then
+  set -euo pipefail
+  error "Build failed. Check your files."
+  exit
+fi
 
 if $is_running; then
   exec_log xdotool search --name RViz key ctrl+s
   # Wait until saving is done
+  info "Waiting RViz to save changes..."
   exec_log xdotool search --sync --name '^[^*]*RViz$'
 
+  info "Restarting visualization components..."
   exec_log eval "rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill"
   # Kill all joint_state_publisher processes, which is left after `rosnode kill`
   ps ax | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
