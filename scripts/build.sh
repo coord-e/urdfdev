@@ -12,12 +12,18 @@ is_running=$3
 
 status "Building..."
 
+set +euo pipefail
 if [ -v URDFDEV_CUSTOM_BUILD ]; then
   exec_info eval "$URDFDEV_CUSTOM_BUILD"
 elif [[ "$model_path" = *.xacro ]]; then
   exec_info rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "$model_path" -o "$urdf_path"
 else
   exec_info cp "$model_path" "$urdf_path"
+fi
+if [ "$?" != "0" ]; then
+  set -euo pipefail
+  error "Build failed. Check your files."
+  exit
 fi
 
 if $is_running; then
