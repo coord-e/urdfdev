@@ -1,13 +1,17 @@
 function info() {
-  tput setaf 2 && echo -n " > " && tput sgr0 && echo "$@" && tput sgr0
+  tput setaf 2 && echo -n " >   " && tput sgr0 && echo "$@" && tput sgr0
+}
+
+function error() {
+  tput setaf 1 && echo -n "ERR: " && tput sgr0 && echo "$@" && tput sgr0
 }
 
 function status() {
-  tput setaf 2 && echo -n "=> " && tput sgr0 && tput bold && echo "$@" && tput sgr0
+  tput setaf 2 && echo -n " =>  " && tput sgr0 && tput bold && echo "$@" && tput sgr0
 }
 
 function cmd_info() {
-  tput setaf 2 && echo -n " + " && tput sgr0 && echo "$@" && tput sgr0
+  tput setaf 2 && echo -n "  +  " && tput sgr0 && echo "$@" && tput sgr0
 }
 
 function exec_log_() {
