@@ -13,10 +13,11 @@ ENV TERM=screen-256color
 
 RUN cd /opt/urdfdev \
   && apt-get update \
-  && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-urdf-tutorial xserver-xorg xvfb x11vnc net-tools fswatch fluxbox xdotool ncurses-bin \
+  && apt-get install -y --no-install-recommends ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-urdf-tutorial xserver-xorg xvfb x11vnc net-tools fswatch fluxbox xdotool ncurses-bin git \
   && tar xf /tmp/novnc.tar.gz \
   && mv noVNC* noVNC \
   && ln -rs noVNC/vnc_lite.html noVNC/index.html \
+  && git clone https://github.com/novnc/websockify noVNC/utils/websockify \
   && chmod +x /bin/wait-for-it \
   && rm /tmp/novnc.tar.gz \
   && apt-get autoremove -y \
