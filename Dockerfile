@@ -1,4 +1,5 @@
 FROM ros:latest
+LABEL maintainer="coord.e <me@coord-e.com>"
 
 ARG NOVNC_VERSION=1.0.0
 ARG WEBSOCKIFY_VERSION=0.8.0
