@@ -21,5 +21,5 @@ function exec_log() {
 
 function exec_info {
   cmd_info "$@"
-  exec_log_ "$@" &>> $URDFDEV_LOG
+  exec_log_ "$@"
 }
