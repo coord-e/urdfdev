@@ -12,7 +12,6 @@ is_running=$3
 
 status "Building..."
 
-set +euo pipefail
 if [ -v URDFDEV_CUSTOM_BUILD ]; then
   exec_info eval "$URDFDEV_CUSTOM_BUILD"
 elif [[ "$model_path" = *.xacro ]]; then
@@ -30,7 +29,6 @@ if [ "$?" != "0" ]; then
   error "URDF check failed. Check your files."
   exit
 fi
-set -euo pipefail
 
 if $is_running; then
   exec_log xdotool search --name RViz key ctrl+s
