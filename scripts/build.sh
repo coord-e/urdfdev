@@ -21,7 +21,6 @@ else
   exec_info cp "$model_path" "$urdf_path"
 fi
 if [ "$?" != "0" ]; then
-  set -euo pipefail
   error "Build failed. Check your files."
   exit
 fi
@@ -31,6 +30,7 @@ if [ "$?" != "0" ]; then
   error "URDF check failed. Check your files."
   exit
 fi
+set -euo pipefail
 
 if $is_running; then
   exec_log xdotool search --name RViz key ctrl+s
