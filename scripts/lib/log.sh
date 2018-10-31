@@ -23,7 +23,7 @@ function exec_log() {
   exec_log_ "$@" &>> $URDFDEV_LOG
 }
 
-function exec_info {
+function build_exec {
   cmd_info "$@"
   set +euo pipefail
   exec_log_ "$@" >> $URDFDEV_LOG

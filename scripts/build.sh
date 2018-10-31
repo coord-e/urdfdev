@@ -13,18 +13,18 @@ is_running=$3
 status "Building..."
 
 if [ -v URDFDEV_CUSTOM_BUILD ]; then
-  exec_info eval "$URDFDEV_CUSTOM_BUILD"
+  build_exec eval "$URDFDEV_CUSTOM_BUILD"
 elif [[ "$model_path" = *.xacro ]]; then
-  exec_info rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "$model_path" -o "$urdf_path"
+  build_exec rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "$model_path" -o "$urdf_path"
 else
-  exec_info cp "$model_path" "$urdf_path"
+  build_exec cp "$model_path" "$urdf_path"
 fi
 if [ "$?" != "0" ]; then
   error "Build failed. Check your files."
   exit
 fi
 
-exec_info check_urdf "$urdf_path"
+build_exec check_urdf "$urdf_path"
 if [ "$?" != "0" ]; then
   error "URDF check failed. Check your files."
   exit
