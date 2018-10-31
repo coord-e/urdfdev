@@ -19,13 +19,13 @@ elif [[ "$model_path" = *.xacro ]]; then
 else
   build_exec cp "$model_path" "$urdf_path"
 fi
-if [ "$?" != "0" ]; then
+if [ "$urdfdev_build_exit" != "0" ]; then
   error "Build failed. Check your files."
   exit
 fi
 
 build_exec check_urdf "$urdf_path"
-if [ "$?" != "0" ]; then
+if [ "$urdfdev_build_exit" != "0" ]; then
   error "URDF check failed. Check your files."
   exit
 fi

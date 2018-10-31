@@ -27,5 +27,6 @@ function build_exec {
   cmd_info "$@"
   set +euo pipefail
   exec_log_ "$@" >> $URDFDEV_LOG
+  export urdfdev_build_exit=$?
   set -euo pipefail
 }
