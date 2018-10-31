@@ -12,8 +12,9 @@ model_path=$1
 shift
 sources=${@:-$(pwd)}
 urdf_path=$(mktemp)
+run_status_path=$(mktemp)
 
-build_cmd="/opt/urdfdev/build.sh $model_path $urdf_path"
+build_cmd="/opt/urdfdev/build.sh $model_path $urdf_path $run_status_path"
 
 display_size=${URDFDEV_DISPLAY_SIZE:-1024x768}
 novnc_port=${URDFDEV_NOVNC_PORT:-6080}
@@ -35,9 +36,9 @@ info "rosmaster is launched."
 
 exec_log rosparam set use_gui true
 
-eval $build_cmd false
+eval $build_cmd
 
 info "Waiting noVNC to be launched..."
 wait-for-it -q localhost:$novnc_port -t 0 && status "Ready. You can now view RViz at http://localhost:6080/"
 
-fswatch --event Created --event Updated --event Removed --event Renamed --recursive ${URDFDEV_FSWATCH_ADDITIONAL_OPTIONS:-} $sources | xargs -n1 $build_cmd true
+fswatch --event Created --event Updated --event Removed --event Renamed --recursive ${URDFDEV_FSWATCH_ADDITIONAL_OPTIONS:-} $sources | xargs -n1 $build_cmd

@@ -8,7 +8,7 @@ source "/opt/urdfdev/lib/log.sh"
 
 model_path=$1
 urdf_path=$2
-is_running=$3
+run_status_path=$3
 
 status "Building..."
 
@@ -30,7 +30,7 @@ if [ "$urdfdev_build_exit" != "0" ]; then
   exit
 fi
 
-if $is_running; then
+if [ -s "$run_status_path" ]; then
   exec_log xdotool search --name RViz key ctrl+s
   # Wait until saving is done
   info "Waiting RViz to save changes..."
@@ -46,6 +46,7 @@ exec_log rosparam set robot_description -t "$urdf_path"
 exec_log rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
 exec_log rosrun joint_state_publisher joint_state_publisher &
 exec_log rosrun robot_state_publisher state_publisher &
+echo "started" > $run_status_path
 
 # Maximize rviz window
 exec_log xdotool search --sync --name RViz windowsize 100% 100%
