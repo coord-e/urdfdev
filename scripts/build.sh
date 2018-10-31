@@ -26,7 +26,7 @@ if [ "$?" != "0" ]; then
   exit
 fi
 
-check_urdf "$urdf_path" >> $URDFDEV_LOG
+exec_info check_urdf "$urdf_path"
 if [ "$?" != "0" ]; then
   error "URDF check failed. Check your files."
   exit
