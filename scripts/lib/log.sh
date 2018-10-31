@@ -1,5 +1,5 @@
 function info() {
-  tput setaf 2 && echo -n " >   " && tput sgr0 && echo "$@" && tput sgr0
+  tput setaf 2 && echo -n "   > " && tput sgr0 && echo "$@" && tput sgr0
 }
 
 function error() {
@@ -7,11 +7,11 @@ function error() {
 }
 
 function status() {
-  tput setaf 2 && echo -n " =>  " && tput sgr0 && tput bold && echo "$@" && tput sgr0
+  tput setaf 2 && echo -n "  => " && tput sgr0 && tput bold && echo "$@" && tput sgr0
 }
 
 function cmd_info() {
-  tput setaf 2 && echo -n "  +  " && tput sgr0 && echo "$@" && tput sgr0
+  tput setaf 2 && echo -n "   + " && tput sgr0 && echo "$@" && tput sgr0
 }
 
 function exec_log_() {
@@ -23,7 +23,10 @@ function exec_log() {
   exec_log_ "$@" &>> $URDFDEV_LOG
 }
 
-function exec_info {
+function build_exec {
   cmd_info "$@"
-  exec_log_ "$@"
+  set +euo pipefail
+  exec_log_ "$@" >> $URDFDEV_LOG
+  export urdfdev_build_exit=$?
+  set -euo pipefail
 }

@@ -8,25 +8,29 @@ source "/opt/urdfdev/lib/log.sh"
 
 model_path=$1
 urdf_path=$2
-is_running=$3
+run_status_path=$3
 
 status "Building..."
 
-set +euo pipefail
 if [ -v URDFDEV_CUSTOM_BUILD ]; then
-  exec_info eval "$URDFDEV_CUSTOM_BUILD"
+  build_exec eval "$URDFDEV_CUSTOM_BUILD"
 elif [[ "$model_path" = *.xacro ]]; then
-  exec_info rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "$model_path" -o "$urdf_path"
+  build_exec rosrun xacro xacro ${URDFDEV_XACRO_ADDITIONAL_OPTIONS:-} "$model_path" -o "$urdf_path"
 else
-  exec_info cp "$model_path" "$urdf_path"
+  build_exec cp "$model_path" "$urdf_path"
 fi
-if [ "$?" != "0" ]; then
-  set -euo pipefail
+if [ "$urdfdev_build_exit" != "0" ]; then
   error "Build failed. Check your files."
   exit
 fi
 
-if $is_running; then
+build_exec check_urdf "$urdf_path"
+if [ "$urdfdev_build_exit" != "0" ]; then
+  error "URDF check failed. Check your files."
+  exit
+fi
+
+if [ -s "$run_status_path" ]; then
   exec_log xdotool search --name RViz key ctrl+s
   # Wait until saving is done
   info "Waiting RViz to save changes..."
@@ -42,6 +46,7 @@ exec_log rosparam set robot_description -t "$urdf_path"
 exec_log rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
 exec_log rosrun joint_state_publisher joint_state_publisher &
 exec_log rosrun robot_state_publisher state_publisher &
+echo "started" > $run_status_path
 
 # Maximize rviz window
 exec_log xdotool search --sync --name RViz windowsize 100% 100%
