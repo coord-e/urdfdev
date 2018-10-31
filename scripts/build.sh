@@ -26,6 +26,12 @@ if [ "$?" != "0" ]; then
   exit
 fi
 
+check_urdf "$urdf_path" >> $URDFDEV_LOG
+if [ "$?" != "0" ]; then
+  error "URDF check failed. Check your files."
+  exit
+fi
+
 if $is_running; then
   exec_log xdotool search --name RViz key ctrl+s
   # Wait until saving is done
