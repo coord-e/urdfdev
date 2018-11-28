@@ -8,7 +8,9 @@ source "/opt/urdfdev/lib/log.sh"
 
 model_path=$1
 urdf_path=$2
-run_status_path=$3
+if [ "$URDFDEV_MODE" == "dev" ]; then
+  run_status_path=$3
+fi
 
 status "Building..."
 
