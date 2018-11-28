@@ -13,21 +13,29 @@ touch $URDFDEV_LOG
 info "Logging to $URDFDEV_LOG"
 info "Working in $URDFDEV_MODE mode"
 
+function dev_mode() {
+  /opt/urdfdev/run.sh $@ &
+  local pid=$!
+  trap "kill $pid" 1 2 3 15
+  if [ "${URDFDEV_VERBOSE:-}" != "" ]; then
+    tail -f $URDFDEV_LOG &
+  fi
+  wait $pid
+}
+
+function build_mode() {
+  /opt/urdfdev/build.sh $@
+}
+
 case $URDFDEV_MODE in
   "dev" )
-    /opt/urdfdev/run.sh $@ &
-    pid=$!
-    trap "kill $pid" 1 2 3 15
-    if [ "${URDFDEV_VERBOSE:-}" != "" ]; then
-      tail -f $URDFDEV_LOG &
-    fi
-    wait $pid
+    dev_mode $@
     ;;
   "build" )
-    /opt/urdfdev/build.sh $@
+    build_mode $@
     ;;
   * )
-    error "Mode ""$URDFDEV_MODE"" not supported"
-    exit -1
+    info "Mode ""$URDFDEV_MODE"" is not defined; Falling back to ""dev"" mode"
+    dev_mode $@
     ;;
 esac
