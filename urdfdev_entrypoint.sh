@@ -4,18 +4,38 @@ set -euo pipefail
 
 source "/opt/urdfdev/lib/log.sh"
 
+export URDFDEV_MODE=$1
+shift
+
 export URDFDEV_LOG=${URDFDEV_LOG:-/var/log/urdfdev.log}
 touch $URDFDEV_LOG
 
 info "Logging to $URDFDEV_LOG"
+info "Working in $URDFDEV_MODE mode"
 
-/opt/urdfdev/run.sh $@ &
-pid=$!
-trap "kill $pid" 1 2 3 15
+function dev_mode() {
+  /opt/urdfdev/run.sh $@ &
+  local pid=$!
+  trap "kill $pid" 1 2 3 15
+  if [ "${URDFDEV_VERBOSE:-}" != "" ]; then
+    tail -f $URDFDEV_LOG &
+  fi
+  wait $pid
+}
 
-if [ "${URDFDEV_VERBOSE:-}" != "" ]; then
-  tail -f $URDFDEV_LOG &
-fi
+function build_mode() {
+  /opt/urdfdev/build.sh $@
+}
 
-
-wait $pid
+case $URDFDEV_MODE in
+  "dev" )
+    dev_mode $@
+    ;;
+  "build" )
+    build_mode $@
+    ;;
+  * )
+    info "Mode ""$URDFDEV_MODE"" is not defined; Falling back to ""dev"" mode"
+    dev_mode $@
+    ;;
+esac
