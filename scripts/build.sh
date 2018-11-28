@@ -30,25 +30,29 @@ if [ "$urdfdev_build_exit" != "0" ]; then
   exit
 fi
 
-if [ -s "$run_status_path" ]; then
-  exec_log xdotool search --name RViz key ctrl+s
-  # Wait until saving is done
-  info "Waiting RViz to save changes..."
-  exec_log xdotool search --sync --name '^[^*]*RViz$'
+if [ "$URDFDEV_MODE" == "dev" ]; then
+  if [ -s "$run_status_path" ]; then
+    exec_log xdotool search --name RViz key ctrl+s
+    # Wait until saving is done
+    info "Waiting RViz to save changes..."
+    exec_log xdotool search --sync --name '^[^*]*RViz$'
 
-  info "Restarting visualization components..."
-  exec_log eval "rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill"
-  # Kill all joint_state_publisher processes, which is left after `rosnode kill`
-  ps ax | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
+    info "Restarting visualization components..."
+    exec_log eval "rosnode list | grep -e rviz -e joint_state_publisher -e robot_state_publisher | xargs -r rosnode kill"
+    # Kill all joint_state_publisher processes, which is left after `rosnode kill`
+    ps ax | grep "[j]oint_state_publisher" | awk '{print $1}' | xargs -r kill -9
+  fi
+
+  exec_log rosparam set robot_description -t "$urdf_path"
+  exec_log rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
+  exec_log rosrun joint_state_publisher joint_state_publisher &
+  exec_log rosrun robot_state_publisher state_publisher &
+  echo "started" > $run_status_path
+
+  # Maximize rviz window
+  exec_log xdotool search --sync --name RViz windowsize 100% 100%
+
+  status "Built and started rviz"
+else
+  status "Built"
 fi
-
-exec_log rosparam set robot_description -t "$urdf_path"
-exec_log rosrun rviz rviz -d $(rospack find urdf_tutorial)/rviz/urdf.rviz &
-exec_log rosrun joint_state_publisher joint_state_publisher &
-exec_log rosrun robot_state_publisher state_publisher &
-echo "started" > $run_status_path
-
-# Maximize rviz window
-exec_log xdotool search --sync --name RViz windowsize 100% 100%
-
-status "Built and started rviz"
