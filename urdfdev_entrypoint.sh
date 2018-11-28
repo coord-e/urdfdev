@@ -26,4 +26,8 @@ case $URDFDEV_MODE in
   "build" )
     /opt/urdfdev/build.sh $@
     ;;
+  * )
+    error "Mode ""$URDFDEV_MODE"" not supported"
+    exit -1
+    ;;
 esac
