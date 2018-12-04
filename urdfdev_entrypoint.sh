@@ -35,7 +35,7 @@ case $URDFDEV_MODE in
     build_mode $@
     ;;
   * )
-    info "Mode ""$URDFDEV_MODE"" is not defined; Falling back to ""dev"" mode"
-    dev_mode $@
+    error "Mode ""$URDFDEV_MODE"" is not defined"
+    exit -1
     ;;
 esac
